@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>三个小玩具 · ISS / 名画 / 冷知识</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230E1B1E'/%3E%3Ccircle cx='16' cy='16' r='6' fill='none' stroke='%23E0A36C' stroke-width='1.8'/%3E%3Ccircle cx='16' cy='16' r='2' fill='%23E0A36C'/%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#0E1B1E;
+  --panel:#14252800;
+  --panel-solid:#152629;
+  --panel-2:#1A2F32;
+  --line:#2A4346;
+  --ink:#E8EEE9;
+  --ink-2:#9BAEA8;
+  --amber:#E0A36C;
+  --sage:#7FB2A8;
+  --bad:#D8776F;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--bg);
+  background-image:radial-gradient(circle at 18% -10%, #1B3437 0%, transparent 55%);
+  color:var(--ink);
+  font-family:"PingFang SC","Hiragino Sans GB","Noto Sans SC",system-ui,sans-serif;
+  font-size:15px;line-height:1.65;padding:0 0 46px;
+}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+
+header{padding:30px 0 20px;border-bottom:1px solid var(--line)}
+h1{font-size:27px;line-height:1.3;letter-spacing:-.01em;font-weight:600}
+h1 span{color:var(--amber)}
+.sub{color:var(--ink-2);font-size:14px;margin-top:9px;max-width:36em}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.badges i{
+  font-style:normal;font-size:12px;color:var(--sage);
+  border:1px solid #2E4A4C;padding:3px 9px;border-radius:20px;
+}
+
+.grid{display:grid;grid-template-columns:1fr;gap:14px;margin-top:20px}
+@media (min-width:900px){
+  .grid{grid-template-columns:1.45fr 1fr;align-items:start}
+  .grid > section:nth-child(1){grid-row:1 / span 2}
+}
+
+section{
+  background:var(--panel-solid);
+  border:1px solid var(--line);
+  padding:15px 15px 16px;
+}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:12px}
+h2{font-size:16px;font-weight:600;letter-spacing:.02em}
+.sec-head em{font-style:normal;font-size:12px;color:var(--ink-2);text-align:right}
+
+/* ---------- ISS 地图 ---------- */
+.map-box{position:relative;background:#0B1517;border:1px solid #223A3D}
+#map{display:block;width:100%;height:auto}
+.map-note{
+  position:absolute;right:8px;bottom:7px;font-size:11px;color:#6C8385;
+}
+.metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}
+@media (min-width:560px){.metrics{grid-template-columns:repeat(4,1fr)}}
+.metric{background:var(--panel-2);padding:9px 11px}
+.metric b{display:block;font-size:19px;font-weight:600;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.metric span{font-size:11.5px;color:var(--ink-2)}
+.metric b small{font-size:12px;color:var(--ink-2);font-weight:400;margin-left:2px}
+
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}
+button{
+  font:inherit;font-size:14px;min-height:44px;padding:0 16px;
+  background:#21383B;color:var(--ink);border:1px solid #33555A;cursor:pointer;
+}
+button:hover{background:#2A474B}
+button:active{transform:translateY(1px)}
+button.primary{background:var(--amber);border-color:var(--amber);color:#20160E;font-weight:600}
+button.primary:hover{background:#EBb184}
+button[aria-pressed="true"]{background:#2A4C49;border-color:var(--sage);color:#CDE4DE}
+button:disabled{opacity:.45;cursor:progress}
+.status{font-size:12.5px;color:var(--ink-2);margin-top:10px;min-height:1.4em}
+.status.err{color:var(--bad)}
+
+/* ---------- 名画 ---------- */
+.art-frame{
+  position:relative;background:#0B1517;border:1px solid #223A3D;overflow:hidden;
+  min-height:210px;
+  background-image:repeating-linear-gradient(45deg, #0D181A 0 10px, #0B1517 10px 20px);
+}
+.art-frame img{
+  display:block;width:100%;height:210px;object-fit:cover;background:#0B1517;
+  transition:height .25s ease;cursor:zoom-in;
+}
+.art-frame img:not([src]){height:0}
+.art-frame.big img{height:min(72vh,520px);object-fit:contain;cursor:zoom-out}
+.art-loading{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:13px;color:#78908C;pointer-events:none;
+}
+.art-loading.hide{display:none}
+.art-meta{margin-top:11px}
+.art-title{font-size:15.5px;font-weight:600;line-height:1.45}
+.art-by{font-size:13px;color:var(--ink-2);margin-top:3px}
+.art-tech{font-size:12px;color:#7D9490;margin-top:6px}
+.art-link{display:inline-block;margin-top:9px;font-size:12.5px;color:var(--sage);text-decoration:none;border-bottom:1px solid #3A5E59;min-height:32px;line-height:32px}
+.art-link:hover{color:var(--amber);border-color:var(--amber)}
+
+/* ---------- 冷知识 ---------- */
+.fact-body{min-height:104px;display:flex;flex-direction:column;justify-content:center}
+.fact-text{font-size:17px;line-height:1.62;color:#EAF0EA}
+.fact-src{font-size:11.5px;color:#7D9490;margin-top:12px}
+
+/* ---------- 页脚 ---------- */
+footer{margin-top:26px;padding-top:16px;border-top:1px solid var(--line);font-size:12.5px;color:#78908C;line-height:1.75}
+footer strong{color:var(--ink-2);font-weight:600}
+.toast{
+  position:fixed;left:50%;bottom:22px;transform:translate(-50%,12px);
+  background:#20383B;border:1px solid #3A5E59;color:#E8EEE9;padding:10px 16px;
+  font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:9;max-width:88vw;
+}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>三个小玩具：<span>空间站 · 名画 · 冷知识</span></h1>
+  <p class="sub">全部来自公开免费接口，不需要注册、不需要 key、页面不存任何数据。接口偶尔抽风属于常态，这里做了降级，不会白屏。</p>
+  <div class="badges"><i>免 key</i><i>纯前端</i><i>自动重试</i><i>数据实时</i></div>
+</header>
+
+<div class="grid">
+
+  <!-- ========== 1. ISS ========== -->
+  <section>
+    <div class="sec-head">
+      <h2>国际空间站在哪儿</h2>
+      <em>Where the ISS at · 每 5 秒</em>
+    </div>
+    <div class="map-box">
+      <svg id="map" viewBox="0 0 720 360" preserveAspectRatio="xMidYMid meet" role="img" aria-label="国际空间站实时位置的等距圆柱投影示意地图">
+        <g id="graticule" stroke="#1E3336" stroke-width="1" fill="none"></g>
+        <g id="land" fill="#1B3135" stroke="#2E4A4C" stroke-width="0.9"></g>
+        <polyline id="trail" fill="none" stroke="#E0A36C" stroke-width="1.4" stroke-dasharray="4 4" opacity=".75"></polyline>
+        <g id="iss" opacity="0">
+          <circle id="issRing" cx="0" cy="0" r="10" fill="none" stroke="#E0A36C" stroke-width="1.3" opacity=".6"></circle>
+          <circle id="issDot" cx="0" cy="0" r="4.2" fill="#E0A36C"></circle>
+          <line id="ch1" x1="-14" y1="0" x2="-6" y2="0" stroke="#E0A36C" stroke-width="1.1"></line>
+          <line id="ch2" x1="6" y1="0" x2="14" y2="0" stroke="#E0A36C" stroke-width="1.1"></line>
+          <line id="ch3" x1="0" y1="-14" x2="0" y2="-6" stroke="#E0A36C" stroke-width="1.1"></line>
+          <line id="ch4" x1="0" y1="6" x2="0" y2="14" stroke="#E0A36C" stroke-width="1.1"></line>
+        </g>
+      </svg>
+      <div class="map-note">大陆轮廓为示意，非精确地理边界</div>
+    </div>
+
+    <div class="metrics">
+      <div class="metric"><b id="mLat">—</b><span>纬度</span></div>
+      <div class="metric"><b id="mLon">—</b><span>经度</span></div>
+      <div class="metric"><b id="mAlt">—<small>km</small></b><span>轨道高度</span></div>
+      <div class="metric"><b id="mVel">—<small>km/h</small></b><span>飞行速度</span></div>
+    </div>
+
+    <div class="controls">
+      <button class="primary" id="btnRefresh">刷新一次</button>
+      <button id="btnAuto" aria-pressed="true">自动刷新：开</button>
+    </div>
+    <div class="status" id="issStatus">正在获取位置…</div>
+  </section>
+
+  <!-- ========== 2. 名画 ========== -->
+  <section>
+    <div class="sec-head">
+      <h2>大都会博物馆，随便一幅</h2>
+      <em>The Met Open Access</em>
+    </div>
+    <div class="art-frame" id="artFrame">
+      <img id="artImg" alt="随机馆藏画作" referrerpolicy="no-referrer">
+      <div class="art-loading" id="artLoading">正在取画…</div>
+    </div>
+    <div class="art-meta">
+      <div class="art-title" id="artTitle">正在取画…</div>
+      <div class="art-by" id="artBy"></div>
+      <div class="art-tech" id="artTech"></div>
+      <a class="art-link" id="artLink" href="https://www.metmuseum.org/art/collection" target="_blank" rel="noopener">在官网查看这幅画</a>
+    </div>
+    <div class="controls">
+      <button class="primary" id="btnArt">换一幅</button>
+    </div>
+    <div class="status" id="artStatus"></div>
+  </section>
+
+  <!-- ========== 3. 冷知识 ========== -->
+  <section>
+    <div class="sec-head">
+      <h2>一条没用的知识</h2>
+      <em>Useless Facts / Advice Slip</em>
+    </div>
+    <div class="fact-body">
+      <div class="fact-text" id="factText">正在翻书…</div>
+      <div class="fact-src" id="factSrc"></div>
+    </div>
+    <div class="controls">
+      <button class="primary" id="btnFact">再来一条</button>
+    </div>
+    <div class="status" id="factStatus"></div>
+  </section>
+
+</div>
+
+<footer>
+  <strong>数据来源</strong>：空间站坐标来自 wheretheiss.at（NORAD ID 25544）；画作来自大都会艺术博物馆开放获取接口（公共领域作品）；冷知识来自 uselessfacts.jsph.pl 与 adviceslip.com。<br>
+  <strong>说明</strong>：地图为等距圆柱投影示意，只用来表达“此刻在哪个经纬度”，不能当作导航工具；跨域或网络受限时，各模块会显示不可达提示并保留上一次成功的数据。
+</footer>
+
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  var W = 720, H = 360;
+  var ISS_URL = "https://api.wheretheiss.at/v1/satellites/25544";
+  var MET_BASE = "https://collectionapi.metmuseum.org/public/collection/v1";
+
+  var toast = document.getElementById("toast");
+  var toastTimer = null;
+  function showToast(msg){
+    toast.textContent = msg;
+    toast.classList.add("on");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toast.classList.remove("on"); }, 1900);
+  }
+
+  function getJSON(url, ms){
+    var ctrl = new AbortController();
+    var timer = setTimeout(function(){ ctrl.abort(); }, ms || 10000);
+    return fetch(url, { signal: ctrl.signal, cache: "no-store" })
+      .then(function(r){
+        if(!r.ok) throw new Error("HTTP " + r.status);
+        return r.json();
+      })
+      .finally(function(){ clearTimeout(timer); });
+  }
+
+  /* ===================== 地图底图 ===================== */
+  function toXY(lon, lat){
+    return [ (lon + 180) / 360 * W, (90 - lat) / 180 * H ];
+  }
+
+  var LANDS = [
+    // 北美
+    [[-168,65],[-140,70],[-120,72],[-95,72],[-80,73],[-62,60],[-55,47],[-70,42],[-75,35],[-81,25],[-97,26],[-105,20],[-115,30],[-125,40],[-135,58],[-150,60]],
+    // 南美
+    [[-81,8],[-70,12],[-60,10],[-50,0],[-35,-6],[-38,-15],[-48,-25],[-58,-35],[-65,-45],[-72,-52],[-75,-45],[-71,-30],[-70,-18],[-80,-5]],
+    // 非洲与阿拉伯半岛
+    [[-17,15],[0,20],[10,32],[25,32],[35,30],[43,12],[51,12],[45,0],[40,-15],[32,-25],[20,-35],[12,-18],[8,4],[-8,5]],
+    // 欧亚
+    [[-10,36],[0,44],[10,45],[20,40],[30,40],[40,42],[50,45],[60,45],[75,40],[90,30],[100,20],[110,20],[120,30],[130,35],[140,45],[145,55],[160,60],[170,65],[178,68],[160,70],[130,73],[100,76],[70,70],[45,68],[30,70],[20,65],[10,58],[5,50]],
+    // 澳洲
+    [[114,-22],[122,-18],[130,-12],[138,-15],[145,-20],[150,-25],[153,-30],[148,-38],[140,-38],[130,-32],[120,-34]],
+    // 格陵兰
+    [[-45,60],[-20,70],[-20,82],[-50,84],[-65,78],[-55,65]]
+  ];
+
+  function buildMap(){
+    var land = document.getElementById("land");
+    LANDS.forEach(function(poly){
+      var pts = poly.map(function(p){ var xy = toXY(p[0], p[1]); return xy[0].toFixed(1) + "," + xy[1].toFixed(1); }).join(" ");
+      var el = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+      el.setAttribute("points", pts);
+      land.appendChild(el);
+    });
+    // 南极洲
+    var ant = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    ant.setAttribute("x", "0"); ant.setAttribute("y", toXY(0,-68)[1].toFixed(1));
+    ant.setAttribute("width", String(W)); ant.setAttribute("height", (H - toXY(0,-68)[1]).toFixed(1));
+    ant.setAttribute("fill", "#1B3135"); ant.setAttribute("stroke", "#2E4A4C");
+    land.appendChild(ant);
+
+    var grat = document.getElementById("graticule");
+    var i;
+    for(i = -150; i <= 150; i += 30){
+      var x = toXY(i, 0)[0];
+      var l = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      l.setAttribute("x1", x.toFixed(1)); l.setAttribute("y1", "0");
+      l.setAttribute("x2", x.toFixed(1)); l.setAttribute("y2", String(H));
+      if(i === 0) l.setAttribute("stroke", "#3A5E59");
+      grat.appendChild(l);
+    }
+    for(i = -60; i <= 60; i += 30){
+      var y = toXY(0, i)[1];
+      var l2 = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      l2.setAttribute("x1", "0"); l2.setAttribute("y1", y.toFixed(1));
+      l2.setAttribute("x2", String(W)); l2.setAttribute("y2", y.toFixed(1));
+      if(i === 0) l2.setAttribute("stroke", "#3A5E59");
+      grat.appendChild(l2);
+    }
+  }
+
+  /* ===================== ISS ===================== */
+  var issGroup = document.getElementById("iss");
+  var trailEl = document.getElementById("trail");
+  var trail = [];
+  var autoOn = true;
+  var autoTimer = null;
+  var lastGood = null;
+
+  var btnRefresh = document.getElementById("btnRefresh");
+  var btnAuto = document.getElementById("btnAuto");
+  var issStatus = document.getElementById("issStatus");
+
+  function placeIss(lat, lon){
+    var xy = toXY(lon, lat);
+    var cx = xy[0], cy = xy[1];
+    document.getElementById("issDot").setAttribute("cx", cx);
+    document.getElementById("issDot").setAttribute("cy", cy);
+    document.getElementById("issRing").setAttribute("cx", cx);
+    document.getElementById("issRing").setAttribute("cy", cy);
+    document.getElementById("ch1").setAttribute("x1", cx - 14); document.getElementById("ch1").setAttribute("x2", cx - 6);
+    document.getElementById("ch2").setAttribute("x1", cx + 6);  document.getElementById("ch2").setAttribute("x2", cx + 14);
+    document.getElementById("ch1").setAttribute("y1", cy); document.getElementById("ch1").setAttribute("y2", cy);
+    document.getElementById("ch2").setAttribute("y1", cy); document.getElementById("ch2").setAttribute("y2", cy);
+    document.getElementById("ch3").setAttribute("y1", cy - 14); document.getElementById("ch3").setAttribute("y2", cy - 6);
+    document.getElementById("ch4").setAttribute("y1", cy + 6);  document.getElementById("ch4").setAttribute("y2", cy + 14);
+    document.getElementById("ch3").setAttribute("x1", cx); document.getElementById("ch3").setAttribute("x2", cx);
+    document.getElementById("ch4").setAttribute("x1", cx); document.getElementById("ch4").setAttribute("x2", cx);
+    issGroup.setAttribute("opacity", "1");
+  }
+
+  function num(v, digits){
+    if(v === null || v === undefined || isNaN(v)) return "—";
+    return Number(v).toFixed(digits);
+  }
+
+  function renderIss(d, src){
+    var lat = Number(d.latitude), lon = Number(d.longitude);
+    if(isNaN(lat) || isNaN(lon)) throw new Error("返回数据缺经纬度");
+
+    document.getElementById("mLat").textContent = num(lat, 2);
+    document.getElementById("mLon").textContent = num(lon, 2);
+    document.getElementById("mAlt").innerHTML = (d.altitude === undefined || isNaN(d.altitude))
+      ? "—"
+      : num(d.altitude, 0) + "<small>km</small>";
+    document.getElementById("mVel").innerHTML = (d.velocity === undefined || isNaN(d.velocity))
+      ? "—"
+      : Number(d.velocity).toLocaleString("zh-CN", {maximumFractionDigits:0}) + "<small>km/h</small>";
+
+    placeIss(lat, lon);
+
+    trail.push(toXY(lon, lat));
+    if(trail.length > 26) trail.shift();
+    trailEl.setAttribute("points", trail.map(function(p){ return p[0].toFixed(1) + "," + p[1].toFixed(1); }).join(" "));
+
+    var t = new Date();
+    var hh = String(t.getHours()).padStart(2,"0");
+    var mm = String(t.getMinutes()).padStart(2,"0");
+    var ss = String(t.getSeconds()).padStart(2,"0");
+    issStatus.className = "status";
+    issStatus.textContent = "更新于 " + hh + ":" + mm + ":" + ss
+      + (autoOn ? " · 每 5 秒自动刷新" : " · 自动刷新已暂停")
+      + (src === "fallback" ? " · 备用源（仅经纬度）" : "");
+    lastGood = d;
+  }
+
+  function failIss(err){
+    issStatus.className = "status err";
+    var msg = (err && err.name === "AbortError") ? "请求超时" : "接口不可达";
+    issStatus.textContent = msg + "（可能是网络受限或接口临时故障）" + (lastGood ? "，仍显示上一次成功的位置" : "，稍后自动重试");
+    if(!lastGood){
+      placeIss(0, 0);
+    }
+  }
+
+  var OPEN_NOTIFY = "http://api.open-notify.org/iss-now.json";
+
+  function fetchIss(){
+    // 主源带高度与速度；失败则退到只给经纬度的备用源
+    return getJSON(ISS_URL, 12000)
+      .then(function(d){ return { data: d, src: "primary" }; })
+      .catch(function(){
+        return getJSON(OPEN_NOTIFY, 9000).then(function(d){
+          var p = d && d.iss_position;
+          if(!p) throw new Error("备用源无数据");
+          return { data: { latitude: p.latitude, longitude: p.longitude }, src: "fallback" };
+        });
+      });
+  }
+
+  function loadIss(){
+    btnRefresh.disabled = true;
+    return fetchIss()
+      .then(function(res){ renderIss(res.data, res.src); })
+      .catch(failIss)
+      .finally(function(){ btnRefresh.disabled = false; });
+  }
+
+  function startAuto(){
+    stopAuto();
+    autoTimer = setInterval(function(){
+      if(document.hidden) return;
+      loadIss();
+    }, 5000);
+  }
+  function stopAuto(){
+    if(autoTimer){ clearInterval(autoTimer); autoTimer = null; }
+  }
+
+  btnRefresh.addEventListener("click", function(){
+    loadIss();
+  });
+
+  btnAuto.addEventListener("click", function(){
+    autoOn = !autoOn;
+    btnAuto.setAttribute("aria-pressed", autoOn ? "true" : "false");
+    btnAuto.textContent = "自动刷新：" + (autoOn ? "开" : "关");
+    if(autoOn) startAuto(); else stopAuto();
+    if(lastGood){
+      issStatus.className = "status";
+      issStatus.textContent = autoOn ? "已恢复每 5 秒刷新" : "自动刷新已暂停，可手动点“刷新一次”";
+    }
+  });
+
+  /* ===================== 名画 ===================== */
+  var artIds = null;
+  var artFrame = document.getElementById("artFrame");
+  var artImg = document.getElementById("artImg");
+  var artTitle = document.getElementById("artTitle");
+  var artBy = document.getElementById("artBy");
+  var artTech = document.getElementById("artTech");
+  var artLink = document.getElementById("artLink");
+  var artStatus = document.getElementById("artStatus");
+  var artLoading = document.getElementById("artLoading");
+  var btnArt = document.getElementById("btnArt");
+
+  function setArtLoading(on, text){
+    if(on){ artLoading.textContent = text || "正在取画…"; artLoading.classList.remove("hide"); }
+    else { artLoading.classList.add("hide"); }
+  }
+
+  artImg.addEventListener("load", function(){ setArtLoading(false); });
+  artImg.addEventListener("error", function(){
+    setArtLoading(true, "图片加载失败（图床可能被网络限制）");
+  });
+
+  // 兜底作品：梵高《麦田与柏树》，大都会公共领域
+  var FALLBACK = {
+    objectID: 436535,
+    title: "Wheat Field with Cypresses",
+    artistDisplayName: "Vincent van Gogh",
+    objectDate: "1889",
+    medium: "Oil on canvas",
+    primaryImageSmall: "",
+    objectURL: "https://www.metmuseum.org/art/collection/search/436535"
+  };
+
+  function loadIds(){
+    if(artIds && artIds.length) return Promise.resolve(artIds);
+    // Met 的 /search 已于 2026-10-01 下线（返回 410），改用 /objects 列表接口取 ID 池
+    return getJSON(MET_BASE + "/objects?departmentIds=11", 16000)
+      .then(function(d){
+        var ids = (d && d.objectIDs) ? d.objectIDs.filter(function(n){ return n > 0; }) : [];
+        if(!ids.length) throw new Error("列表为空");
+        artIds = ids;
+        return ids;
+      });
+  }
+
+  // 图片候选：走代理、压成 WebP、禁止放大（we），优先速度
+  function artImageCandidates(orig){
+    var enc = encodeURIComponent(orig);
+    return [
+      "https://images.weserv.nl/?url=" + enc + "&w=900&we&output=webp&q=70",
+      "https://wsrv.nl/?url=" + enc + "&w=900&we&output=webp",
+      "https://images.weserv.nl/?url=" + enc + "&w=640&we&output=jpg&q=70",
+      orig
+    ];
+  }
+
+  var IMG_TIMEOUT = 5000;
+
+  function pickArtImage(orig, done){
+    if(!orig){ done(null, "该作品没有配图"); return; }
+    var cands = artImageCandidates(orig);
+    var i = 0;
+    function next(){
+      if(i >= cands.length){ done(null, "图片代理与图床均不可达"); return; }
+      var url = cands[i++];
+      var probe = new Image();
+      var settled = false;
+      var timer = setTimeout(function(){
+        if(settled) return; settled = true; probe.src = ""; next();
+      }, IMG_TIMEOUT);
+      probe.onload = function(){
+        if(settled) return; settled = true; clearTimeout(timer); done(url, null);
+      };
+      probe.onerror = function(){
+        if(settled) return; settled = true; clearTimeout(timer); next();
+      };
+      probe.src = url;
+    }
+    next();
+  }
+
+  var artReady = null;     // 已预取好的下一幅 {data, url}
+  var artRestocking = false;
+  var artCache = {};       // objectID -> {data, url}
+
+  function renderArtMeta(d){
+    artImg.alt = d.title ? ("馆藏画作：" + d.title) : "馆藏画作";
+    artTitle.textContent = d.title || "无题";
+    artBy.textContent = (d.artistDisplayName || "佚名") + (d.objectDate ? " · " + d.objectDate : "");
+    artTech.textContent = d.medium || "";
+    artLink.href = d.objectURL || "https://www.metmuseum.org/art/collection";
+    artFrame.classList.remove("big");
+    artStatus.className = "status";
+    artStatus.textContent = "编号 " + d.objectID + (d.isPublicDomain ? " · 公共领域" : "");
+  }
+
+  function showArt(rec){
+    renderArtMeta(rec.data);
+    if(rec.url){
+      setArtLoading(true, "加载中…");
+      artImg.classList.remove("missing");
+      artImg.src = rec.url;
+    } else {
+      artImg.removeAttribute("src");
+      artImg.classList.add("missing");
+      setArtLoading(true, "图片取不到，可点下方链接去官网看原图");
+    }
+  }
+
+  // 取一件：最多重试 3 次，跳过没有配图的作品
+  function fetchOne(n){
+    return loadIds()
+      .then(function(ids){
+        var pick = ids[Math.floor(Math.random() * ids.length)];
+        return getJSON(MET_BASE + "/objects/" + pick, 12000);
+      })
+      .then(function(d){
+        if(d && d.objectID && (d.primaryImageSmall || d.primaryImage)) return d;
+        if(n > 0) return fetchOne(n - 1);
+        throw new Error("连续抽到无图作品");
+      })
+      .catch(function(err){
+        if(n > 0) return fetchOne(n - 1);
+        throw err;
+      });
+  }
+
+  // 下载并预热图片，成功后连 URL 一起缓存
+  function prepareArt(d){
+    if(artCache[d.objectID]) return Promise.resolve(artCache[d.objectID]);
+    return new Promise(function(resolve){
+      pickArtImage(d.primaryImageSmall || d.primaryImage || "", function(url){
+        var rec = { data: d, url: url };
+        if(url) artCache[d.objectID] = rec;
+        resolve(rec);
+      });
+    });
+  }
+
+  // 后台预取下一幅，点按钮时直接换图，不用等
+  function restockArt(){
+    if(artReady || artRestocking) return;
+    artRestocking = true;
+    fetchOne(2)
+      .then(prepareArt)
+      .then(function(rec){ artReady = rec; })
+      .catch(function(){ /* 预取失败不影响交互 */ })
+      .finally(function(){ artRestocking = false; });
+  }
+
+  function failArt(err){
+    artStatus.className = "status err";
+    artStatus.textContent = (err && err.name === "AbortError" ? "请求超时" : "接口不可达") + "，显示兜底作品";
+    var fb = Object.assign({}, FALLBACK);
+    showArt({ data: fb, url: "https://images.weserv.nl/?url=" + encodeURIComponent("https://images.metmuseum.org/CRDImages/ep/web-large/DP-42549-001.jpg") + "&w=900&we&output=webp&q=70" });
+    artStatus.textContent = "离线兜底：梵高《麦田与柏树》，网络恢复后自动恢复随机";
+  }
+
+  function loadArt(){
+    btnArt.disabled = true;
+    artStatus.className = "status";
+
+    if(artReady){
+      var rec = artReady;
+      artReady = null;
+      showArt(rec);
+      btnArt.disabled = false;
+      restockArt();
+      return;
+    }
+
+    artStatus.textContent = "正在挑一幅…";
+    fetchOne(2)
+      .then(prepareArt)
+      .then(function(r){
+        showArt(r);
+        restockArt();
+      })
+      .catch(failArt)
+      .finally(function(){ btnArt.disabled = false; });
+  }
+
+  btnArt.addEventListener("click", function(){ loadArt(); });
+  artImg.addEventListener("click", function(){
+    if(!artImg.getAttribute("src")) { showToast("当前没有可放大的图片"); return; }
+    artFrame.classList.toggle("big");
+  });
+
+  /* ===================== 冷知识 ===================== */
+  var factText = document.getElementById("factText");
+  var factSrc = document.getElementById("factSrc");
+  var factStatus = document.getElementById("factStatus");
+  var btnFact = document.getElementById("btnFact");
+
+  var SOURCES = [
+    {
+      name: "Useless Facts",
+      url: "https://uselessfacts.jsph.pl/api/v2/facts/random",
+      pick: function(d){ return d && d.text; }
+    },
+    {
+      name: "Advice Slip",
+      url: "https://api.adviceslip.com/advice",
+      pick: function(d){ return d && d.slip && d.slip.advice; }
+    }
+  ];
+
+  var FALLBACK_FACTS = [
+    "味蕾的平均寿命只有 10 天左右，旧的死了，新的长出来。",
+    "蜂蜜在密封状态下几乎不会变质，考古队在古墓里挖出过仍可食用的蜂蜜。",
+    "把消极的东西去掉，放大积极的那些。"
+  ];
+
+  var factIdx = 0;
+
+  function loadFact(){
+    btnFact.disabled = true;
+    factStatus.className = "status";
+    factStatus.textContent = "正在取…";
+
+    var src = SOURCES[factIdx % SOURCES.length];
+    factIdx++;
+
+    return getJSON(src.url, 10000)
+      .then(function(d){
+        var text = src.pick(d);
+        if(!text) throw new Error("返回内容为空");
+        factText.textContent = text;
+        factSrc.textContent = "来源：" + src.name;
+        factStatus.className = "status";
+        factStatus.textContent = "";
+      })
+      .catch(function(err){
+        var fb = FALLBACK_FACTS[Math.floor(Math.random() * FALLBACK_FACTS.length)];
+        factText.textContent = fb;
+        factSrc.textContent = "来源：本地备用文案（接口暂时不可达）";
+        factStatus.className = "status err";
+        factStatus.textContent = (err && err.name === "AbortError" ? "请求超时" : "接口不可达") + "，已显示备用内容";
+      })
+      .finally(function(){ btnFact.disabled = false; });
+  }
+
+  btnFact.addEventListener("click", function(){ loadFact(); });
+
+  /* ===================== 启动 ===================== */
+  buildMap();
+  loadIss();
+  loadArt();
+  loadFact();
+  startAuto();
+
+  document.addEventListener("visibilitychange", function(){
+    if(document.hidden) stopAuto();
+    else if(autoOn) startAuto();
+  });
+})();
+</script>
+</body>
+</html>
